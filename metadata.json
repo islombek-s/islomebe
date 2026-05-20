@@ -1,0 +1,6 @@
+{
+  "name": "AI Homework Detector",
+  "description": "A modern futuristic platform to detect AI-generated homework, code, and text using advanced NLP and pattern analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
