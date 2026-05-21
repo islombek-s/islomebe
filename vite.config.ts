@@ -1,18 +1,11 @@
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    // GitHub Pages-dagi manzilingiz (repozitoriya nomi)
-    base: '/islomebe/', 
-    
-    plugins: [react(), tailwindcss()],
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '.'),
-      },
+    // GitHub Pages base URL
+    base: '/islomebe/',
+    server: {
+      port: 3000,
     },
   };
 });
