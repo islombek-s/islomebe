@@ -1,12 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>EduParent AI</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/main.tsx"></script>
-  </body>
+    <title>EduParent AI - AI Homework Detector</title>
+  <link rel="stylesheet" crossorigin href="/islomebe/assets/index-V1KmKYKt.css">
+</head>
+<body>
+    <div id="root">
+        <!-- Navigation Bar -->
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <h1>EduParent AI</h1>
+                </div>
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="landing">Home</button>
+                    <button class="nav-tab" data-tab="scanner">Scanner</button>
+                    <button class="nav-tab" data-tab="dashboard">Dashboard</button>
+                </div>
+                <div class="nav-controls">
+                    <button id="theme-toggle" class="theme-btn">🌙 Dark</button>
+                    <select id="lang-select" class="lang-select">
+                        <option value="en">English</option>
+                        <option value="uz">O'zbekcha</option>
+                        <option value="ru">Русский</option>
+                    </select>
+                    <button id="auth-btn" class="auth-btn">Sign In</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Landing Page Tab -->
+            <div id="landing-tab" class="tab-content active">
+                <section class="landing-hero">
+                    <div class="hero-glow"></div>
+                    <div class="hero-content">
+                        <h2 class="hero-title">AI Homework Detector</h2>
+                        <p class="hero-subtitle">Detect AI-generated homework with advanced NLP and pattern analysis</p>
+                        <button class="btn-primary btn-lg" onclick="switchTab('scanner')">Get Started</button>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🔍</div>
+                            <h3>Advanced Detection</h3>
+                            <p>Uses AI to identify patterns in homework</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Detailed Reports</h3>
+                            <p>Get comprehensive analysis with metrics</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🛡️</div>
+                            <h3>Secure & Private</h3>
+                            <p>Your data is protected and confidential</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Scanner Tab -->
+            <div id="scanner-tab" class="tab-content">
+                <section class="scanner-section">
+                    <div class="upload-zone glass-panel">
+                        <div id="upload-area" class="upload-area">
+                            <div class="upload-icon">📄</div>
+                            <h3>Upload Your File</h3>
+                            <p>Drag and drop or click to upload</p>
+                            <input type="file" id="file-input" class="file-input" accept=".txt,.py,.js,.java,.cpp,.html,.css,.pdf">
+                        </div>
+                        <div id="file-form" class="file-form" style="display:none;">
+                            <div class="form-group">
+                                <label>Student Name</label>
+                                <input type="text" id="student-name" placeholder="Enter student name">
+                            </div>
+                            <div class="form-group">
+                                <label>Student ID</label>
+                                <input type="text" id="student-id" placeholder="Enter student ID">
+                            </div>
+                            <div class="form-group">
+                                <label>Class ID</label>
+                                <input type="text" id="class-id" placeholder="Enter class ID">
+                            </div>
+                            <button class="btn-primary" onclick="analyzeFile()">Analyze Now</button>
+                            <button class="btn-secondary" onclick="resetUpload()">Clear File</button>
+                        </div>
+                    </div>
+                    <div id="loading-spinner" class="loading-spinner" style="display:none;">
+                        <div class="spinner"></div>
+                        <p>Analyzing your file...</p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Results Tab -->
+            <div id="results-tab" class="tab-content">
+                <section class="results-section" id="results-container" style="display:none;">
+                    <div class="glass-panel results-panel">
+                        <div class="results-header">
+                            <h2>Analysis Report</h2>
+                            <button class="btn-secondary btn-sm" onclick="downloadReport()">Download</button>
+                        </div>
+
+                        <div class="score-display">
+                            <div class="score-item">
+                                <div class="score-label">AI Score</div>
+                                <div class="score-value" id="ai-score">0%</div>
+                                <div class="score-bar">
+                                    <div class="score-fill ai-fill" id="ai-fill"></div>
+                                </div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-label">Human Score</div>
+                                <div class="score-value" id="human-score">0%</div>
+                                <div class="score-bar">
+                                    <div class="score-fill human-fill" id="human-fill"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="confidence-box">
+                            <span>Confidence Level:</span>
+                            <strong id="confidence-level">High</strong>
+                        </div>
+
+                        <div class="explanation-box">
+                            <h3>Overall Explanation</h3>
+                            <p id="explanation-text"></p>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <span class="metric-label">Repeated Patterns</span>
+                                <span class="metric-value" id="metric-repeated">0%</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-label">Comment Patterns</span>
+                                <span class="metric-value" id="metric-comments">0%</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-label">Naming Conventions</span>
+                                <span class="metric-value" id="metric-naming">0%</span>
+                            </div>
+                            <div class="metric-card">
+                                <span class="metric-label">Style Consistency</span>
+                                <span class="metric-value" id="metric-style">0%</span>
+                            </div>
+                        </div>
+
+                        <div class="suspicious-lines">
+                            <h3>Suspicious Lines</h3>
+                            <div id="suspicious-list">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+
+                        <button class="btn-primary btn-block" onclick="switchTab('scanner')">Analyze Another File</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="dashboard-tab" class="tab-content">
+                <section class="dashboard-section glass-panel">
+                    <h2>Teacher Dashboard</h2>
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <h3>Total Scans</h3>
+                            <p class="dashboard-stat">0</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>AI Detected</h3>
+                            <p class="dashboard-stat">0</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <h3>Likely Human</h3>
+                            <p class="dashboard-stat">0</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Auth Modal -->
+        <div id="auth-modal" class="modal" style="display:none;">
+            <div class="modal-content glass-panel">
+                <button class="modal-close" onclick="closeAuth()">&times;</button>
+                <h2>Sign In / Sign Up</h2>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="auth-email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="auth-password" placeholder="Enter password">
+                </div>
+                <button class="btn-primary btn-block" onclick="handleAuth()">Sign In</button>
+            </div>
+        </div>
+
+        <!-- Overlay -->
+        <div id="modal-overlay" class="modal-overlay" style="display:none;" onclick="closeAuth()"></div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
 </html>
